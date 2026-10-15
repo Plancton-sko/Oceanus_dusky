@@ -1,5 +1,10 @@
 { config, pkgs, ... }:
 
+let
+  sddm-astronaut-theme = pkgs.sddm-astronaut.override {
+    embeddedTheme = "pixel_sakura";
+  };
+in
 {
   imports = [
     ./hardware.nix
@@ -9,6 +14,17 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.timeout = 3;
+
+  # ── Plymouth Boot Splash ──────────────────────────────────────────────────
+  boot.plymouth = {
+    enable = true;
+    theme = "lone";
+    themePackages = [
+      (pkgs.adi1090x-plymouth-themes.override {
+        selected_themes = [ "lone" ];
+      })
+    ];
+  };
 
   # ── Networking ────────────────────────────────────────────────────────────
   networking.hostName = "dusky";
@@ -37,9 +53,18 @@
 
   # ── Display Manager — SDDM (Wayland) ─────────────────────────────────────
   services.xserver.enable = true;
+  qt.enable = true;
   services.displayManager.sddm = {
+    package = pkgs.kdePackages.sddm;
     enable = true;
+    theme = "sddm-astronaut-theme";
     wayland.enable = true;
+    extraPackages = with pkgs; [
+      sddm-astronaut-theme
+      kdePackages.qtmultimedia
+      kdePackages.qtsvg
+      kdePackages.qtvirtualkeyboard
+    ];
   };
   services.displayManager.defaultSession = "hyprland-uwsm";
 
@@ -93,7 +118,7 @@
   # ── File Manager — Thunar ─────────────────────────────────────────────────
   programs.thunar = {
     enable = true;
-    plugins = with pkgs.xfce; [
+    plugins = with pkgs; [
       thunar-archive-plugin
       thunar-volman
     ];
@@ -146,11 +171,10 @@
     packages = with pkgs; [
       jetbrains-mono
       nerd-fonts.jetbrains-mono
-      nerd-fonts.atkinson-hyperlegible
       nerd-fonts.noto
       font-awesome
       noto-fonts
-      noto-fonts-emoji
+      noto-fonts-color-emoji
       liberation_ttf
       atkinson-hyperlegible
     ];
@@ -167,6 +191,7 @@
 
   # ── Essential System Packages ─────────────────────────────────────────────
   environment.systemPackages = with pkgs; [
+    sddm-astronaut-theme
     git
     curl
     wget

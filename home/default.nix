@@ -11,7 +11,7 @@
   home.stateVersion = "24.11";
 
   # Permite pacotes unfree (Spotify, Discord, etc.) tanto no NixOS quanto no standalone Home Manager
-  nixpkgs.config.allowUnfree = true;
+  # nixpkgs.config.allowUnfree = true;
 
   # ── Home Manager instala e gerencia a si mesmo ────────────────────────────
   programs.home-manager.enable = true;
@@ -23,7 +23,7 @@
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     # Carrega o .zshrc customizado do Dusky (em .config/zshrc/.zshrc)
-    initExtra = ''
+    initContent = ''
       if [ -f "$HOME/.config/zshrc/.zshrc" ]; then
         source "$HOME/.config/zshrc/.zshrc"
       fi
@@ -31,9 +31,11 @@
   };
 
   # ── Git ───────────────────────────────────────────────────────────────────
-  programs.git = {
+  programs.git.enable = true;
+
+  programs.delta = {
     enable = true;
-    delta.enable = true;  # git-delta como pager por padrão
+    enableGitIntegration = true;
   };
 
   # ── Systemd User Services (declarativo, idiomático no Nix) ───────────────
@@ -59,12 +61,15 @@
     };
   };
 
-  # ── XDG: Configurações de aplicações padrão ───────────────────────────────
+  # ── XDG: Configurações de aplicações padrão ─────────────────────────────
   xdg = {
     enable = true;
+
     userDirs = {
       enable = true;
       createDirectories = true;
+      setSessionVariables = true;
+
       desktop = "${config.home.homeDirectory}/Desktop";
       documents = "${config.home.homeDirectory}/Documents";
       download = "${config.home.homeDirectory}/Downloads";
@@ -75,9 +80,8 @@
       publicShare = "${config.home.homeDirectory}/Public";
     };
 
-    # ── Symlinks dos dotfiles do Dusky para ~/.config/ ─────────────────────
+    # Symlinks dos dotfiles para ~/.config/
     configFile = {
-      # ── Compositor & WM ──────────────────────────────────────────────────
       "hypr".source = ../.config/hypr;
       "waybar".source = ../.config/waybar;
       "rofi".source = ../.config/rofi;
@@ -86,7 +90,6 @@
       "swappy".source = ../.config/swappy;
       "xdg-desktop-portal".source = ../.config/xdg-desktop-portal;
 
-      # ── Theming ───────────────────────────────────────────────────────────
       "matugen".source = ../.config/matugen;
       "gtk-3.0".source = ../.config/gtk-3.0;
       "gtk-4.0".source = ../.config/gtk-4.0;
@@ -95,16 +98,13 @@
       "Kvantum".source = ../.config/Kvantum;
       "xsettingsd".source = ../.config/xsettingsd;
 
-      # ── Terminals ─────────────────────────────────────────────────────────
       "kitty".source = ../.config/kitty;
       "foot".source = ../.config/foot;
       "alacritty".source = ../.config/alacritty;
 
-      # ── Shell & CLI ───────────────────────────────────────────────────────
       "starship.toml".source = ../.config/starship.toml;
       "zshrc".source = ../.config/zshrc;
 
-      # ── Apps ──────────────────────────────────────────────────────────────
       "btop".source = ../.config/btop;
       "cava".source = ../.config/cava;
       "mpv".source = ../.config/mpv;
@@ -113,38 +113,30 @@
       "zellij".source = ../.config/zellij;
       "obs-studio".source = ../.config/obs-studio;
 
-      # ── Dusky Custom Config & Scripts ─────────────────────────────────────
       "dusky".source = ../.config/dusky;
       "dusky_nvim".source = ../.config/dusky_nvim;
       "dusky_sites".source = ../.config/dusky_sites;
 
-      # ── Systemd User Units (via symlink — gerenciados pelos scripts Lua) ──
       "systemd/user/hyprland-session.target".source =
         ../.config/systemd/user/hyprland-session.target;
       "systemd/user/swaync.service.d".source =
         ../.config/systemd/user/swaync.service.d;
 
-      # ── XDG & Desktop Integration ─────────────────────────────────────────
       "mimeapps.list".source = ../.config/mimeapps.list;
       "autostart".source = ../.config/autostart;
       "desktop_entries".source = ../.config/desktop_entries;
-
-      # ── Nota: pacman/ e pacseek/ foram removidos (Arch-only) ─────────────
-      # Use: nix search nixpkgs#<pacote>, nh, ou manix como substitutos
     };
 
-    # ── Associações de MIME types ─────────────────────────────────────────
-    mimeApps = {
-      enable = true;
-      # As associações vêm do mimeapps.list linkado acima.
-      # Se houver conflito, comente a linha source acima e use este bloco.
-    };
+    # Mantém o mimeapps.list personalizado, sem gerar outro arquivo
+    mimeApps.enable = false;
   };
 
-  # ── Arquivos no home directory ────────────────────────────────────────────
+  # ── Arquivos no home directory ───────────────────────────────────────────
   home.file = {
-    # Scripts do Dusky linkados diretamente em ~/user_scripts
-    "user_scripts".source = ../user_scripts;
-    "user_scripts".recursive = true;
+    "user_scripts" = {
+      source = ../user_scripts;
+      recursive = true;
+    };
   };
 }
+

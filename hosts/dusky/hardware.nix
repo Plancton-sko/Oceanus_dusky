@@ -7,9 +7,10 @@
 
   # ── Kernel modules (AMD CPU + NVMe + USB) ────────────────────────────────
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.kernelModules = [ "amdgpu" ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
+  services.xserver.videoDrivers = [ "amdgpu" ];
 
   # ── Filesystems (LUKS-encrypted ext4 + EFI) ──────────────────────────────
   fileSystems."/" = {
@@ -36,14 +37,10 @@
     enable = true;
     enable32Bit = true;
     extraPackages = with pkgs; [
-      amdvlk           # AMD Vulkan driver
       vulkan-loader
       vulkan-validation-layers
       vulkan-extension-layer
-      libvdpau-va-gl   # VDPAU via VA-API bridge
-    ];
-    extraPackages32 = with pkgs; [
-      driversi686Linux.amdvlk
+      libvdpau-va-gl  
     ];
   };
 

@@ -42,8 +42,8 @@ in
 
     # ── Wayland Core & WM Utilities ───────────────────────────────────────
     waybar
-    rofi-wayland
-    swaync
+    rofi
+    swaynotificationcenter
     mako
     matugen
     hyprlock
@@ -54,8 +54,7 @@ in
     brightnessctl
     playerctl
     nwg-look
-    qt5ct
-    qt6ct
+    qt6Packages.qt6ct
     papirus-icon-theme
     bibata-cursors
 
@@ -95,7 +94,7 @@ in
     zoxide
     less
     jq
-    du-dust
+    dust
     btop
     htop
     nvtopPackages.full
@@ -116,12 +115,12 @@ in
     # ── Editors & Dev Tools ───────────────────────────────────────────────
     neovim
     git
-    git-delta
+    delta
     lazygit
     shellcheck
     shfmt
     stylua
-    nixfmt-rfc-style  # formatador de arquivos .nix (padrão oficial)
+    nixfmt # formatador de arquivos .nix (padrão oficial)
 
     # ── Multimedia & Apps ─────────────────────────────────────────────────
     mpv
