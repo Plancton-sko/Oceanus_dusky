@@ -76,10 +76,16 @@ ZSH_DOCS+=(
     "rm"                  "Remove files or directories (interactive mode)."
     "cat"                 "Concatenate and print files (often overridden by bat)."
 
-    # --- ARCH LINUX / PACMAN / SYSTEM ---
-    "pacman"              "Arch Linux package manager."
-    "yay"                 "AUR helper and pacman wrapper."
-    "paru"                "Feature-packed AUR helper."
+    # --- NIXOS / NIX / SYSTEM ---
+    "nix"                 "Nix package manager CLI (nix build, nix shell, nix run...)."
+    "nixos-rebuild"       "Rebuild and switch NixOS system configuration."
+    "home-manager"        "Home Manager CLI to switch user environment."
+    "nix flake update"    "Update all flake inputs to latest versions."
+    "nix-collect-garbage" "Remove old Nix store paths and free disk space."
+    "rebuild"             "Alias: sudo nixos-rebuild switch --flake ~/dusky#dusky."
+    "hm_switch"           "Alias: home-manager switch --flake ~/dusky#plancton."
+    "nix_update"          "Alias: flake update + nixos-rebuild switch."
+    "nix_gc"              "Alias: run nix garbage collection (user + system)."
     "update"              "System update alias."
     "sysctl"              "Kernel parameter configuration."
     "systemctl"           "Control the systemd system and service manager."
@@ -94,7 +100,7 @@ _atlas_fzf_ok() {
     local v
 
     if (( ! $+commands[fzf] )); then
-        print -ru2 -- 'atlas: fzf is not installed  (pacman -S fzf)'
+        print -ru2 -- 'atlas: fzf is not installed  (nix shell nixpkgs#fzf)'
         return 1
     fi
     if [[ -z ${_DUSKY_FZF_VERSION-} ]]; then

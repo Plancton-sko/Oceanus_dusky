@@ -58,8 +58,6 @@ export TERMINAL='kitty'
 export EDITOR='nvim'
 export VISUAL='nvim'
 
-# Compilation Optimization: Moved to ~/.config/pacman/makepkg.conf
-
 # Clipboard DB path: refresh at startup and at each interactive prompt.
 # Read the toggler's file as literal data, using the daemon's path/fallback rules.
 _dusky_clipboard_env() {
@@ -167,12 +165,22 @@ alias dusky_replace='python3 ~/user_scripts/tools/sed/dusky_replace.py'
 
 # System & Development Scripts
 alias tui='python ~/user_scripts/dusky_tui/python/main/main.py'
-alias sendlogs="$HOME/user_scripts/arch_setup_scripts/send_logs.sh --auto"
+alias sendlogs="$HOME/user_scripts/arch_setup_scripts/send_logs.sh --auto"  # Note: may need adaptation for NixOS
 alias update_dusky="$HOME/user_scripts/update_dusky/python/update_dusky_supervisor.py"
 alias dusky_force_sync_github="$HOME/user_scripts/update_dusky/dusky_force_sync_github.sh"
 alias darkmode="$HOME/user_scripts/theme_matugen/theme_ctl.sh set --mode dark"
 alias lightmode="$HOME/user_scripts/theme_matugen/theme_ctl.sh set --mode light"
 alias run_sysbench="$HOME/user_scripts/performance/sysbench_benchmark.py"
+
+# NixOS System Management
+alias rebuild='sudo nixos-rebuild switch --flake ~/dusky#dusky'
+alias rebuild_test='sudo nixos-rebuild test --flake ~/dusky#dusky'
+alias rebuild_dry='sudo nixos-rebuild dry-build --flake ~/dusky#dusky'
+alias hm_switch='home-manager switch --flake ~/dusky#plancton'
+alias nix_update='cd ~/dusky && nix flake update && sudo nixos-rebuild switch --flake .#dusky'
+alias update_nix="$HOME/user_scripts/update_dusky/nixos_update.sh"
+alias nix_gc='nix-collect-garbage -d && sudo nix-collect-garbage -d'
+alias nix_generations='sudo nix-env --list-generations --profile /nix/var/nix/profiles/system'
 
 # mpv + yt-dlp livestream playback (vid URL, vid --help, etc.)
 _vid() {
@@ -196,7 +204,9 @@ _ask_func() {
 alias ask='noglob _ask_func'
 
 # Memory Optimization
-alias mem_optimize='sudo systemctl start dusky_pro_active_zram_swap.service'
+# Note: On NixOS, zram is managed declaratively via zramSwap.enable = true in hosts/dusky/default.nix.
+# Use 'systemctl status dev-zram0.swap' to check zram status.
+alias mem_status='systemctl status dev-zram0.swap 2>/dev/null || swapon --show'
 
 # Networking
 alias iphone_vnc="$HOME/user_scripts/networking/iphone_vnc.sh"
@@ -319,26 +329,20 @@ unset _starship_cache _starship_bin _fzf_cache _fzf_bin
 # -----------------------------------------------------------------------------
 # [8] PLUGINS (Execution Order Critical)
 # -----------------------------------------------------------------------------
-# Autosuggestions MUST be sourced before Syntax Highlighting.
-
-# --- Zsh Autosuggestions ---
-if [[ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
-    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=60' # Dimmed grey matching
-    source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-fi
-
-# --- Zsh Syntax Highlighting ---
-# This MUST be the absolute last thing sourced in the file.
-if [[ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
-  source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-fi
+# On NixOS, zsh-autosuggestions and zsh-syntax-highlighting are managed
+# declaratively by Home Manager (programs.zsh.autosuggestion.enable and
+# programs.zsh.syntaxHighlighting.enable in home/default.nix).
+# Home Manager injects the plugin sources automatically — no manual sourcing needed.
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=60' # Dimmed grey matching
 
 # -----------------------------------------------------------------------------
 # [9] TTY AUTO-LOGIN (Hyprland)
 # -----------------------------------------------------------------------------
-# Native variable check avoids expensive $(tty) subshells
+# Native variable check avoids expensive $(tty) subshells.
+# On NixOS with programs.hyprland.withUWSM = true, the session is launched
+# via UWSM (Universal Wayland Session Manager).
 if [[ -z "$DISPLAY" && -z "$WAYLAND_DISPLAY" && "$TTY" == "/dev/tty1" ]]; then
-  exec start-hyprland
+  exec uwsm start hyprland-uwsm.desktop
 fi
 
 

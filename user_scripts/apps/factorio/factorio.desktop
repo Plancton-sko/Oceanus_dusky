@@ -2,7 +2,7 @@
 Type=Application
 Name=Factorio
 Comment=Factorio game
-Exec=/home/dusk/user_scripts/apps/factorio/run.sh
+Exec=/home/plancton/user_scripts/apps/factorio/run.sh
 Icon=factorio
 Categories=Game;
 Terminal=false

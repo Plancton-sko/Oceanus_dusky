@@ -39,7 +39,7 @@ async def test_database_lifecycle():
             "comm": "test_app",
             "exe": "/usr/bin/test_app",
             "uid": 1000,
-            "username": "dusk",
+            "username": "plancton",
             "cgroup_path": "/sys/fs/cgroup/netctl",
             "bytes_sent": 50000,
             "bytes_recv": 150000,

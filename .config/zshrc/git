@@ -43,7 +43,7 @@ fi
 # -----------------------------------------------------------------------------
 function git_dusky() {
     emulate -L zsh
-    /usr/bin/git --git-dir="$DUSKY_GIT_DIR" --work-tree="$HOME" "$@"
+    command git --git-dir="$DUSKY_GIT_DIR" --work-tree="$HOME" "$@"
 }
 
 function _git_dusky_have_head() {
@@ -171,7 +171,7 @@ function _git_dusky_restore() {
     local -i force=0
     [[ ${1-} == (-y|--force) ]] && force=1
 
-    print -ru2 -- "/usr/bin/git --git-dir=$DUSKY_GIT_DIR --work-tree=$HOME reset --hard HEAD"
+    print -ru2 -- "git --git-dir=$DUSKY_GIT_DIR --work-tree=$HOME reset --hard HEAD"
     print -ru2 -- 'DANGER: discards ALL staged and unstaged changes to tracked dotfiles in $HOME.'
     if (( ! force )); then
         if [[ ! -t 0 ]]; then
@@ -472,7 +472,7 @@ function _gitdelta_browse() {
 
     # fzf runs previews through $SHELL, where zsh functions do not exist, so
     # git is inlined with both paths baked in at build time via (q) quoting.
-    preview="/usr/bin/git -C ${(q)HOME} --git-dir=${(q)DUSKY_GIT_DIR} --work-tree=${(q)HOME}"
+    preview="git -C ${(q)HOME} --git-dir=${(q)DUSKY_GIT_DIR} --work-tree=${(q)HOME}"
     preview+=" show --color=always --decorate=short --date=format-local:'%Y-%m-%d %H:%M'"
     preview+=" --format='%C(bold blue)󰏖 %h%C(reset) %C(bold green)%an%C(reset) %C(dim)%ad%C(reset)%d%n%C(bold yellow)%s%C(reset)'"
     preview+=' --stat --patch {5}'

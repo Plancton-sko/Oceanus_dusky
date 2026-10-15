@@ -55,7 +55,8 @@ hl_env("XDG_CURRENT_DESKTOP", "Hyprland")
 hl_env("XDG_SESSION_TYPE", "wayland")
 hl_env("XDG_SESSION_DESKTOP", "Hyprland")
 hl_env("XDG_SESSION_CLASS", "user") -- needed for localsearch ConditionEnvironment
-hl_env("XDG_MENU_PREFIX", "arch-") -- fixes empty Open With in Dolphin/digiKam on Arch
+-- XDG_MENU_PREFIX is Arch-specific (breaks open-with menu lookup on NixOS)
+-- hl_env("XDG_MENU_PREFIX", "arch-")
 
 -- 5. Toolkit / Wayland native backends - merged from your UWSM env
 hl_env("GDK_BACKEND", "wayland,x11,*")

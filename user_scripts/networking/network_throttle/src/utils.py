@@ -7,7 +7,7 @@ from pathlib import Path
 
 # Brand name
 BRAND_NAME = "Dusky Network Limiter"
-SETTINGS_DIR = Path("/home/dusk/.config/dusky/settings/dusky_network_limiter")
+SETTINGS_DIR = Path("/home/plancton/.config/dusky/settings/dusky_network_limiter")
 SETTINGS_DIR.mkdir(parents=True, exist_ok=True)
 DB_PATH = SETTINGS_DIR / "network_limiter.db"
 
@@ -114,7 +114,7 @@ def send_notification(title: str, message: str) -> None:
     """Send desktop notification via active user DBus under Wayland/Hyprland."""
     # Find display user dusk (UID 1000)
     cmd = [
-        "sudo", "-u", "dusk",
+        "sudo", "-u", "plancton",
         "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus",
         "notify-send", "-a", BRAND_NAME, title, message
     ]

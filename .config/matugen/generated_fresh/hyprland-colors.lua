@@ -1,6 +1,6 @@
--- Source: /home/dusk/Pictures/wallpapers/dusk_default.jpg
+-- Source: /home/plancton/Pictures/wallpapers/dusk_default.jpg
 
-image = "/home/dusk/Pictures/wallpapers/dusk_default.jpg"
+image = "/home/plancton/Pictures/wallpapers/dusk_default.jpg"
 
 
 background = "rgba(0a1612ff)"

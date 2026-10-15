@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Test: launching Factorio via the user's run.sh launcher (with the shim fix).
 GAME=/mnt/zram1/Factorio_2.1.14
-RUNSH=/home/dusk/user_scripts/apps/factorio/run.sh
+RUNSH=/home/plancton/user_scripts/apps/factorio/run.sh
 rm -f /tmp/eglfix.log /tmp/runsh_test.log
 
 echo "=== launching via run.sh (game dir: $GAME) ==="

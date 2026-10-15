@@ -169,7 +169,7 @@ logs() {
     local df_bin="${commands[df]-}"
     local lscpu_bin="${commands[lscpu]-}"
 
-    local time_bin="/usr/bin/time"
+    local time_bin="${commands[time]-}"
     [[ -x "$time_bin" ]] || time_bin=""
 
     local _tool _var

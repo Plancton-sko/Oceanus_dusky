@@ -1,7 +1,16 @@
 # =============================================================================
 # Dusky Package Installer & Search (pkg_search)
 # Exposes a dynamic, interactive FZF installer utilizing paru, yay, or pacman.
+#
+# NOTE (NixOS): This module requires 'pacman'/'paru'/'yay' (Arch Linux tools).
+# On NixOS these commands are not available. The 'pkg_search' function is not loaded.
 # =============================================================================
+
+# NixOS compatibility guard — skip this module if pacman is not present.
+if ! (( $+commands[pacman] )); then
+    return 0
+fi
+
 
 pkg_search() {
     # 1. Dependency Validation

@@ -8,7 +8,16 @@
 #               Hidden-Field Description Searching, Wayland wl-copy Integration.
 # Usage: pkg [command] [count]
 #        (Run without count to launch the Interactive FZF Atlas)
+#
+# NOTE (NixOS): This module requires 'pacman' and 'expac' (Arch Linux tools).
+# On NixOS these commands are not available. The 'pkg' function is not loaded.
 # =============================================================================
+
+# NixOS compatibility guard — skip this module if pacman is not present.
+if ! (( $+commands[pacman] )); then
+    return 0
+fi
+
 
 # DRY Header Helper — defined once at source time.
 _pkg_header() {

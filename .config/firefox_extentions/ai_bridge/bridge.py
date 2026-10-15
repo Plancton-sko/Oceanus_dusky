@@ -177,7 +177,7 @@ def _do_os_return(prev_addr=None, prev_ws_id=None):
         ws_id = ws_info.get("id")
         multi_mon_ws = os.environ.get(
             "AI_BRIDGE_MULTI_MON_WS",
-            "/home/dusk/user_scripts/hypr/multi_monitor_workspace.sh",
+            "/home/plancton/user_scripts/hypr/multi_monitor_workspace.sh",
         )
 
         if ws_id is not None and ws_id > 0:

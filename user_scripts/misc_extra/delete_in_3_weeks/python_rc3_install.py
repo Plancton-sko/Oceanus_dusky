@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """Install the temporary CPython 3.15rc3 build on x86-64 Arch Linux.
 
 Run with the distro Python 3.14+; /usr/bin/python* is never modified.

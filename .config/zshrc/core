@@ -2,7 +2,7 @@
 # =============================================================================
 # Dusky core() — CPU-affinity router for core_runner.py
 #
-# Target: Arch Linux (rolling, 2026+), zsh 5.9+, Python 3.14.6+
+# Target: NixOS (nixos-unstable, 2026+), zsh 5.9+, Python 3.12+
 # Install: source this file from ~/.zshrc  (it must be SOURCED, never executed)
 #          recommended location: ~/.config/zshrc/core
 #
